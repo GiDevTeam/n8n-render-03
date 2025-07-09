@@ -1,0 +1,25 @@
+name: Sync Fork with Upstream
+
+on:
+  workflow_dispatch: # Manuell ausführbar
+  schedule:
+    - cron: '0 6 * * 1' # Jeden Montag um 6:00 UTC
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Sync with upstream
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/n8n-io/n8n.git
+          git fetch upstream
+          git rebase upstream/master
+          git push --force-with-lease origin master
