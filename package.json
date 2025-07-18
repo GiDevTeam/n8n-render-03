@@ -1,6 +1,6 @@
 {
   "name": "n8n-monorepo",
-  "version": "1.102.0",
+  "version": "1.103.0",
   "private": true,
   "engines": {
     "node": ">=22.16",
@@ -38,6 +38,7 @@
     "lint:nodes": "turbo run lint:nodes",
     "lint:frontend": "turbo run lint:frontend",
     "optimize-svg": "find ./packages -name '*.svg' ! -name 'pipedrive.svg' -print0 | xargs -0 -P16 -L20 npx svgo",
+    "setup-backend-module": "node scripts/ensure-zx.mjs && zx scripts/backend-module/setup.mjs",
     "start": "run-script-os",
     "start:default": "cd packages/cli/bin && ./n8n",
     "start:tunnel": "./packages/cli/bin/n8n start --tunnel",
@@ -46,6 +47,8 @@
     "test:backend": "turbo run test:backend --concurrency=1",
     "test:frontend": "turbo run test:frontend --concurrency=1",
     "test:nodes": "turbo run test:nodes --concurrency=1",
+    "test:with:docker": "pnpm --filter=n8n-playwright run test:standard",
+    "test:show:report": "pnpm --filter=n8n-playwright exec playwright show-report",
     "watch": "turbo run watch --parallel",
     "webhook": "./packages/cli/bin/n8n webhook",
     "worker": "./packages/cli/bin/n8n worker"
